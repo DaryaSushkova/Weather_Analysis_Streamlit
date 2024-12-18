@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import requests
 import streamlit as st
 from sklearn.linear_model import LinearRegression
