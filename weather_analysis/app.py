@@ -36,7 +36,7 @@ def main():
                 if result:
                     temperature, description = result
                     st.success(f"Текущая температура в городе {current_city}: {temperature} градусов Цельсия")
-                    st.info(f"Описание погоды: {description.capitalize()}")
+                    st.info(f"Облачность: {description}")
             else:
                 st.warning("Введите API-ключ для получения данных о текущей погоде.")
             

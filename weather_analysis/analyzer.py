@@ -24,9 +24,9 @@ def open_weather_api(city, api_key):
     description = data['weather'][0]['description']
 
     print(f"Текущая температура в городе {city}: {temperature} градусов")
-    print(f"Облачность: {description.capitalize()}")
+    #print(f"Облачность: {description.capitalize()}")
 
-    return temperature
+    return temperature, description.capitalize()
 
   except Exception as e:
     print(f"Ошибка при запросе: {e}")
