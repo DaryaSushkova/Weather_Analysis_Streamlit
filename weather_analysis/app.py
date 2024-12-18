@@ -19,6 +19,7 @@ def main():
         required_columns = {"city", "timestamp", "temperature", "season"}
         if required_columns.issubset(df.columns):
             st.success("Файл успешно загружен!")
+            df['timestamp'] = pd.to_datetime(df['timestamp'])
             
             # Отображение первых строк данных
             st.subheader("Начальные строки загруженного файла:")
