@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from analyzer import open_weather_api
+from analyzer import analyze_city, open_weather_api, check_anomaly
 
+
+CURRENT_DATA = {}
 
 def main():
     st.title("Анализ временных рядов температуры")
@@ -26,6 +28,8 @@ def main():
             st.header("Город для анализа")
             cities_list = df['city'].unique()
             current_city = st.selectbox("Выберите город из списка ниже", cities_list)
+            if current_city not in CURRENT_DATA:
+                CURRENT_DATA[current_city] = analyze_city(df, current_city)
 
             # Интерфейс для ввода API-ключа OpenWeatherMap
             st.header("Получение текущей погоды")
@@ -37,7 +41,8 @@ def main():
                     if result:
                         temperature, description = result
                         st.success(f"Текущая температура в городе {current_city} успешно получена отображена ниже")
-                        st.info(f"Температура: {temperature} °C <br> Облачность: {description}")
+                        st.info(f"Температура: {temperature} °C, облачность: {description}")
+                        check_anomaly(temperature, CURRENT_DATA[current_city]['season_profile'])
                 except Exception as e:
                     st.error(f"Ошибка: {e}")
             else:
