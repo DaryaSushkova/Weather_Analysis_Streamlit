@@ -125,7 +125,11 @@ def check_anomaly(temp: float, season_profile: pd.DataFrame):
         if mean_temp - 2 * std_temp <= temp <= mean_temp + 2 * std_temp:
             st.success(f"Текущая температура {temp} градусов является нормальной для сезона {season}.")
         else:
-            st.warning(f"Текущая температура {temp} градусов является аномальной для сезона {season}.")
+            message = f"""
+            Текущая температура {temp} градусов является аномальной для сезона {season}.\n
+            Допустимый диапазон: [{round(mean_temp - 2 * std_temp, 2)}; {round(mean_temp + 2 * std_temp, 2)}]
+            """
+            st.warning(message)
     else:
         st.error(f"Отсутствуют данные по городу за сезон {season} для определения аномальности.")
     
