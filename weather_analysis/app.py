@@ -32,13 +32,16 @@ def main():
             api_key = st.text_input("Введите ваш API-ключ OpenWeatherMap", type="password")
             
             if api_key:
-                result = open_weather_api(current_city, api_key)
-                if result:
-                    temperature, description = result
-                    st.success(f"Текущая температура в городе {current_city}: {temperature} градусов Цельсия")
-                    st.info(f"Облачность: {description}")
+                try:
+                    result = open_weather_api(current_city, api_key)
+                    if result:
+                        temperature, description = result
+                        st.success(f"Текущая температура в городе {current_city} успешно получена отображена ниже")
+                        st.info(f"Температура: {temperature} °C \nОблачность: {description}")
+                except Exception as e:
+                    st.error(f"Ошибка: {e}")
             else:
-                st.warning("Введите API-ключ для получения данных о текущей погоде.")
+                st.warning("API-ключ не введен.")
             
             # Отображение данных для выбранного города
             # st.subheader(f"Данные для города {selected_city}")
