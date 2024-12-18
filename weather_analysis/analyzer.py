@@ -1,4 +1,5 @@
 import requests
+import streamlit as st
 
 
 def open_weather_api(city, api_key):
@@ -16,6 +17,12 @@ def open_weather_api(city, api_key):
 
   try:
     response = requests.get(base_url, params=params)
+
+    # Проверка на ошибочный статус
+    if response.status_code != 200:
+        error_message = response.json().get('message', 'Произошла неизвестная ошибка')
+        raise Exception(f"Ошибка {response.status_code}: {error_message}")
+    
     response.raise_for_status()
     data = response.json()
 
@@ -26,4 +33,5 @@ def open_weather_api(city, api_key):
     return temperature, description.capitalize()
 
   except Exception as e:
-    print(f"Ошибка при запросе: {e}")
+    st.error(str(e))
+    return None

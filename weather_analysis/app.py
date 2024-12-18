@@ -37,7 +37,7 @@ def main():
                     if result:
                         temperature, description = result
                         st.success(f"Текущая температура в городе {current_city} успешно получена отображена ниже")
-                        st.info(f"Температура: {temperature} °C \nОблачность: {description}")
+                        st.info(f"Температура: {temperature} °C <br> Облачность: {description}")
                 except Exception as e:
                     st.error(f"Ошибка: {e}")
             else:
