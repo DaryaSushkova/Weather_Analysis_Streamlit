@@ -8,34 +8,19 @@ def anomaly_pie_chart(total_count, anomaly_count):
     Построение pie chart для отображения соотношения общего числа данных и числа аномалий.
     '''
 
-    fig, ax = plt.subplots(figsize=(5, 2))
+    plt.figure(figsize=(3, 1.5))
 
-    # Данные для диаграммы
     labels = ['Нормальные данные', 'Аномалии']
     sizes = [total_count - anomaly_count, anomaly_count]
     colors = ['#66b3ff', '#ff6666']
-    explode = (0, 0.1)  # Небольшой отрыв для аномалий
+    explode = (0, 0.1)
 
-    # Построение круговой диаграммы
-    ax.pie(sizes, labels=labels, colors=colors, explode=explode, autopct='%1.1f%%', startangle=140)
-    ax.set_title('Соотношение нормальных данных и аномалий', fontsize=8)
+    plt.figure(figsize=(6, 6))
 
-    # Отображение графика в Streamlit
-    st.pyplot(fig)
+    plt.pie(sizes, labels=labels, colors=colors, explode=explode, autopct='%1.1f%%', startangle=140)
+    plt.title('Соотношение нормальных данных и аномалий')
 
-    # plt.figure(figsize=(3, 1.5))
-
-    # labels = ['Нормальные данные', 'Аномалии']
-    # sizes = [total_count - anomaly_count, anomaly_count]
-    # colors = ['#66b3ff', '#ff6666']
-    # explode = (0, 0.1)
-
-    # plt.figure(figsize=(6, 6))
-
-    # plt.pie(sizes, labels=labels, colors=colors, explode=explode, autopct='%1.1f%%', startangle=140)
-    # plt.title('Соотношение нормальных данных и аномалий')
-
-    # st.pyplot(plt)
+    st.pyplot(plt)
 
 
 def weather_time_series(city_df, anomalies):
