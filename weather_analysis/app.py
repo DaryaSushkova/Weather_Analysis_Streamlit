@@ -7,6 +7,13 @@ from plot_func import anomaly_pie_chart, seasonal_profile, weather_time_series
 CURRENT_DATA = {}
 
 def main():
+    # Конфиги страницы
+    st.set_page_config(
+        page_title="Анализ временных рядов температуры",
+        page_icon="📊",
+        layout="wide"
+    )
+
     st.title("Анализ временных рядов температуры")
 
     # Интерфейс для загрузки файла
