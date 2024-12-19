@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import streamlit as st
+import seaborn as sns
 
 
 def anomaly_pie_chart(total_count, anomaly_count):
@@ -25,13 +26,16 @@ def weather_time_series(city_df, anomalies):
     Построение временного ряда температур с выделением аномалий.
     '''
 
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(14, 7))
 
-    plt.plot(city_df['timestamp'], city_df['temperature'], label='Температура', color='blue')
-    plt.scatter(anomalies['timestamp'], anomalies['temperature'], color='red', label='Аномалии')
+    sns.lineplot(data=city_df, x='timestamp', y='temperature', label='Температура', color='blue')
+    sns.scatterplot(data=anomalies, x='timestamp', y='temperature', color='red', label='Аномалии', s=50)
+
     plt.xlabel('Дата')
     plt.ylabel('Температура (°C)')
     plt.title('Временной ряд температур с аномалиями')
+    plt.legend()
+    plt.xticks(rotation=45)  # Поворот подписей оси X для лучшей читаемости
 
     plt.legend()
     st.pyplot(plt)
