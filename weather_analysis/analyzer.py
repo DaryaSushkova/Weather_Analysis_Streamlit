@@ -50,6 +50,7 @@ def analyze_city(df: pd.DataFrame, city: str):
         'season_profile': season_profile,
         'reg_coeff': reg_coeff,
         'trend': trend,
+        'total_cnt': len(current_df),
         'anomalies_cnt': len(anomalies),
         'anomalies': anomalies[['timestamp', 'temperature']]
     }
