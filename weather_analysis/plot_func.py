@@ -8,7 +8,7 @@ def anomaly_pie_chart(total_count, anomaly_count):
     Построение pie chart для отображения соотношения общего числа данных и числа аномалий.
     '''
 
-    fig, ax = plt.subplots(figsize=(4, 2))
+    fig, ax = plt.subplots(figsize=(6, 3))
 
     # Данные для диаграммы
     labels = ['Нормальные данные', 'Аномалии']
@@ -18,7 +18,7 @@ def anomaly_pie_chart(total_count, anomaly_count):
 
     # Построение круговой диаграммы
     ax.pie(sizes, labels=labels, colors=colors, explode=explode, autopct='%1.1f%%', startangle=140)
-    ax.set_title('Соотношение нормальных данных и аномалий', fontsize=14)
+    ax.set_title('Соотношение нормальных данных и аномалий', fontsize=10)
 
     # Отображение графика в Streamlit
     st.pyplot(fig)
