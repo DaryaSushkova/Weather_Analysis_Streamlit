@@ -8,6 +8,8 @@ def anomaly_pie_chart(total_count, anomaly_count):
     Построение pie chart для отображения соотношения общего числа данных и числа аномалий.
     '''
 
+    plt.figure(figsize=(3, 1.5))
+
     labels = ['Нормальные данные', 'Аномалии']
     sizes = [total_count - anomaly_count, anomaly_count]
     colors = ['#66b3ff', '#ff6666']
