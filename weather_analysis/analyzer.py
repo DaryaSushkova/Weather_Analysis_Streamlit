@@ -52,7 +52,8 @@ def analyze_city(df: pd.DataFrame, city: str):
         'trend': trend,
         'total_cnt': len(current_df),
         'anomalies_cnt': len(anomalies),
-        'anomalies': anomalies[['timestamp', 'temperature']]
+        'anomalies': anomalies,
+        'city_df': current_df
     }
 
 

@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from analyzer import analyze_city, open_weather_api, check_anomaly
-from plot_func import anomaly_pie_chart, seasonal_profile
+from plot_func import anomaly_pie_chart, seasonal_profile, weather_time_series
 
 
 CURRENT_DATA = {}
@@ -59,6 +59,9 @@ def main():
                         st.error(f"Ошибка: {e}")
                 else:
                     st.warning("API-ключ не введен.")
+
+                st.header(f"Временной ряд для города {current_city}")
+                weather_time_series(CURRENT_DATA[current_city]['city_df'], CURRENT_DATA[current_city]['anomalies'])
 
                 st.header(f"Сезонный профиль для города {current_city}")
                 seasonal_profile(CURRENT_DATA[current_city]['season_profile'])
