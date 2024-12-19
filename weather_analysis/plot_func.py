@@ -16,3 +16,16 @@ def anomaly_pie_chart(total_count, anomaly_count):
     plt.pie(sizes, labels=labels, colors=colors, explode=explode, autopct='%1.1f%%', startangle=140)
     plt.title('Соотношение нормальных данных и аномалий')
     st.pyplot(plt)
+
+
+def seasonal_profile(season_profile):
+    '''
+    Построение сезонного профиля со средним и стандартным отклонением.
+    '''
+    
+    plt.figure(figsize=(8, 5))
+    plt.bar(season_profile['season'], season_profile['mean'], yerr=season_profile['std'], capsize=5)
+    plt.xlabel('Сезон')
+    plt.ylabel('Средняя температура (°C)')
+    plt.title('Сезонный профиль температуры')
+    st.pyplot(plt)

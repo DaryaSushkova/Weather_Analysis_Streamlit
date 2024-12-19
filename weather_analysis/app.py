@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from analyzer import analyze_city, open_weather_api, check_anomaly
-from plot_func import anomaly_pie_chart
+from plot_func import anomaly_pie_chart, seasonal_profile
 
 
 CURRENT_DATA = {}
@@ -36,7 +36,7 @@ def main():
                     CURRENT_DATA[current_city] = analyze_city(df, current_city)
 
                 # Вывод описательной статистики
-                st.header(f"Историческая статистика для города {current_city}")
+                st.subheader(f"Историческая статистика для города {current_city}")
                 st.write(f"Средняя температура: {CURRENT_DATA[current_city]['average_temperature']:.2f} °C")
                 st.write(f"Минимальная температура: {CURRENT_DATA[current_city]['min_temperature']:.2f} °C")
                 st.write(f"Максимальная температура: {CURRENT_DATA[current_city]['max_temperature']:.2f} °C")
@@ -44,7 +44,7 @@ def main():
                 anomaly_pie_chart(CURRENT_DATA[current_city]['total_cnt'], CURRENT_DATA[current_city]['anomalies_cnt'])
 
                 # Интерфейс для ввода API-ключа OpenWeatherMap
-                st.header("Получение текущей погоды")
+                st.subheader("Получение текущей погоды")
                 api_key = st.text_input("Введите ваш API-ключ OpenWeatherMap", type="password")
                 
                 if api_key:
@@ -59,6 +59,9 @@ def main():
                         st.error(f"Ошибка: {e}")
                 else:
                     st.warning("API-ключ не введен.")
+
+                st.header(f"Сезонный профиль для города {current_city}")
+                seasonal_profile(CURRENT_DATA[current_city]['season_profile'])
                 
                 # Отображение данных для выбранного города
                 # st.subheader(f"Данные для города {selected_city}")
