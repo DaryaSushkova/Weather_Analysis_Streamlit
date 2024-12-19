@@ -29,30 +29,38 @@ def main():
             st.header("Город для анализа")
             cities_list = df['city'].unique()
             current_city = st.selectbox("Выберите город из списка ниже", cities_list)
-            if current_city not in CURRENT_DATA:
-                CURRENT_DATA[current_city] = analyze_city(df, current_city)
 
-            # Интерфейс для ввода API-ключа OpenWeatherMap
-            st.header("Получение текущей погоды")
-            api_key = st.text_input("Введите ваш API-ключ OpenWeatherMap", type="password")
-            
-            if api_key:
-                try:
-                    result = open_weather_api(current_city, api_key)
-                    if result:
-                        temperature, description = result
-                        st.success(f"Текущая температура в городе {current_city} успешно получена отображена ниже")
-                        st.info(f"Температура: {temperature} °C, облачность: {description}")
-                        check_anomaly(temperature, CURRENT_DATA[current_city]['season_profile'])
-                except Exception as e:
-                    st.error(f"Ошибка: {e}")
-            else:
-                st.warning("API-ключ не введен.")
-            
-            # Отображение данных для выбранного города
-            # st.subheader(f"Данные для города {selected_city}")
-            # city_df = df[df['city'] == selected_city]
-            # st.dataframe(city_df)
+            if current_city:
+                if current_city not in CURRENT_DATA:
+                    CURRENT_DATA[current_city] = analyze_city(df, current_city)
+
+                # Вывод описательной статистики
+                st.header(f"Описательная статистика для города {current_city}")
+                st.write(f"Средняя температура: {CURRENT_DATA[current_city]['average_temperature']:.2f} °C")
+                st.write(f"Минимальная температура: {CURRENT_DATA[current_city]['min_temperature']:.2f} °C")
+                st.write(f"Максимальная температура: {CURRENT_DATA[current_city]['max_temperature']:.2f} °C")
+
+                # Интерфейс для ввода API-ключа OpenWeatherMap
+                st.header("Получение текущей погоды")
+                api_key = st.text_input("Введите ваш API-ключ OpenWeatherMap", type="password")
+                
+                if api_key:
+                    try:
+                        result = open_weather_api(current_city, api_key)
+                        if result:
+                            temperature, description = result
+                            st.success(f"Текущая температура в городе {current_city} успешно получена отображена ниже")
+                            st.info(f"Температура: {temperature} °C, облачность: {description}")
+                            check_anomaly(temperature, CURRENT_DATA[current_city]['season_profile'])
+                    except Exception as e:
+                        st.error(f"Ошибка: {e}")
+                else:
+                    st.warning("API-ключ не введен.")
+                
+                # Отображение данных для выбранного города
+                # st.subheader(f"Данные для города {selected_city}")
+                # city_df = df[df['city'] == selected_city]
+                # st.dataframe(city_df)
 
         else:
             st.error(f"Файл должен содержать столбцы: {', '.join(required_columns)}")
