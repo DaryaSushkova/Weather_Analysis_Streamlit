@@ -4,6 +4,7 @@ import requests
 import streamlit as st
 from sklearn.linear_model import LinearRegression
 from datetime import datetime
+from pandas.api.types import CategoricalDtype
 
 
 def analyze_city(df: pd.DataFrame, city: str):
@@ -24,7 +25,10 @@ def analyze_city(df: pd.DataFrame, city: str):
     anomalies = current_df[current_df['is_anomaly']]
 
     # Профиль сезона
+    season_order = CategoricalDtype(categories=['winter', 'spring', 'summer', 'autumn'], ordered=True)
     season_profile = current_df.groupby('season')['temperature'].agg(['mean', 'std']).reset_index()
+    season_profile['season'] = season_profile['season'].astype(season_order)
+    season_profile = season_profile.sort_values(by='season')
 
     # Добавляем числовую фичу для регрессии - кол-во дней от начала замеров
     current_df['days'] = (current_df['timestamp'] - current_df['timestamp'].min()).dt.days

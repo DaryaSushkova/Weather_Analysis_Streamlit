@@ -28,7 +28,7 @@ def weather_time_series(city_df, anomalies):
     Построение временного ряда температур с выделением аномалий.
     '''
 
-    plt.figure(figsize=(20, 10))
+    plt.figure(figsize=(14, 7))
 
     sns.lineplot(data=city_df, x='timestamp', y='temperature', label='Температура', color='blue')
     sns.scatterplot(data=anomalies, x='timestamp', y='temperature', color='red', label='Аномалии', s=50)
