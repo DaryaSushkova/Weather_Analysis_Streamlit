@@ -18,7 +18,7 @@ def anomaly_pie_chart(total_count, anomaly_count):
 
     # Построение круговой диаграммы
     ax.pie(sizes, labels=labels, colors=colors, explode=explode, autopct='%1.1f%%', startangle=140)
-    ax.set_title('Соотношение нормальных данных и аномалий', fontsize=10)
+    ax.set_title('Соотношение нормальных данных и аномалий', fontsize=5)
 
     # Отображение графика в Streamlit
     st.pyplot(fig)
