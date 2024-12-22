@@ -127,7 +127,7 @@ def check_temp_cities(df, cities_list):
     for city in cities_list:
         curr_temp = open_weather_api(city, api_key)[0]
         curr_season_profile = analyze_city(df, city)['season_profile']
-        check_anomaly(curr_temp, curr_season_profile, st=False)
+        check_anomaly(curr_temp, curr_season_profile, st_flag=False)
         print()
 
 

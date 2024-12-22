@@ -157,7 +157,7 @@ def get_current_season():
         return 'autumn'
 
 
-def check_anomaly(temp: float, season_profile: pd.DataFrame, st=True):
+def check_anomaly(temp: float, season_profile: pd.DataFrame, st_flag=True):
     '''
     Функция проверки текущей погоды на аномальность.
     '''
