@@ -24,7 +24,7 @@ def main():
         df = pd.read_csv(uploaded_file)
 
         # Проверка файла
-        is_valid, errors = validate_file(df)
+        is_valid, error = validate_file(df)
 
         # Проверка структуры данных
         #required_columns = {"city", "timestamp", "temperature", "season"}
@@ -84,9 +84,9 @@ def main():
 
         else:
             #st.error(f"Файл должен содержать столбцы: {', '.join(required_columns)}")
-            st.error("Файл не прошёл проверки. Вот список ошибок:")
-            for error in errors:
-                st.error(error)
+            st.error(f"Файл не прошёл проверку, ошибка: {error}")
+            # for error in errors:
+            #     st.error(error)
 
 if __name__ == "__main__":
     main()
