@@ -4,7 +4,7 @@ import json
 import time
 import pandas as pd
 from datetime import datetime
-from analyzer import analyze_city, open_weather_api
+from analyzer import analyze_city, open_weather_api, check_anomaly
 from multiprocessing import Pool
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -96,8 +96,6 @@ def test_open_weather_api(cities_list):
     with open("optional/key.json") as json_file:
         data = json.load(json_file)
     api_key = data['api_key']
-    print(api_key)
-
 
     print(f"Текущее время: {datetime.now()}\n")
 
@@ -117,9 +115,29 @@ def test_open_weather_api(cities_list):
     print(f"Асинхронное выполнение заняло {res_time:.2f} секунд.")
 
 
+def check_temp_cities(df, cities_list):
+    '''
+    Функция проверки аномальности текущей температуры для нескольких городов.
+    '''
+
+    with open("optional/key.json") as json_file:
+        data = json.load(json_file)
+    api_key = data['api_key']
+
+    for city in cities_list:
+        curr_temp = open_weather_api(city, api_key)[0]
+        curr_season_profile = analyze_city(df, city)['season_profile']
+        check_anomaly(curr_temp, curr_season_profile, st=False)
+        print()
+
+
 if __name__ == "__main__":
    df = pd.read_csv('optional/temperature_data.csv')
    df['timestamp'] = pd.to_datetime(df['timestamp'])
    cities_list = df['city'].unique()
-   test_open_weather_api(cities_list)
+
+   # Ниже - вызовы дополнительных функций из задания
+
+   #check_temp_cities(df, cities_list)
+   #test_open_weather_api(cities_list)
    #compare_analyze_city_func(df)

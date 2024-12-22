@@ -7,6 +7,49 @@ from datetime import datetime
 from pandas.api.types import CategoricalDtype
 
 
+def validate_file(df):
+    '''
+    Проверяет загруженный DataFrame на корректность
+    '''
+
+    errors = []
+    
+    # Список обязательных колонок
+    required_columns = {"city", "timestamp", "temperature", "season"}
+    # Список доступных сезонов
+    valid_seasons = {"winter", "spring", "summer", "autumn"}
+
+    # Проверка наличия колонок
+    missing_columns = required_columns - set(df.columns)
+    if missing_columns:
+        errors.append(f"Отсутствуют колонки: {', '.join(missing_columns)}")
+
+    # Проверка типов данных
+    if "timestamp" in df.columns:
+        try:
+            df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+            if df['timestamp'].isna().any():
+                errors.append("Колонка 'timestamp' содержит некорректные значения.")
+        except Exception:
+            errors.append("Ошибка при преобразовании 'timestamp' в формат даты/времени.")
+    else:
+        errors.append("Колонка 'timestamp' отсутствует.")
+
+    if "temperature" in df.columns and not pd.api.types.is_numeric_dtype(df['temperature']):
+        errors.append("Колонка 'temperature' должна быть числовой.")
+    
+    # Проверка значений в колонке 'season'
+    if "season" in df.columns:
+        unique_seasons = set(df['season'].dropna().unique())
+        invalid_seasons = unique_seasons - valid_seasons
+        if invalid_seasons:
+            errors.append(f"Колонка 'season' содержит недопустимые значения: {', '.join(invalid_seasons)}.")
+    else:
+        errors.append("Колонка 'season' отсутствует.")
+
+    return len(errors) == 0, errors
+
+
 def analyze_city(df: pd.DataFrame, city: str):
     '''
     Анализ данных о температуре для заданного города
@@ -113,7 +156,7 @@ def get_current_season():
         return 'autumn'
 
 
-def check_anomaly(temp: float, season_profile: pd.DataFrame):
+def check_anomaly(temp: float, season_profile: pd.DataFrame, st=True):
     '''
     Функция проверки текущей погоды на аномальность.
     '''
@@ -129,13 +172,19 @@ def check_anomaly(temp: float, season_profile: pd.DataFrame):
 
         # Проверка аномальности температуры
         if mean_temp - 2 * std_temp <= temp <= mean_temp + 2 * std_temp:
-            st.success(f"Текущая температура {temp} градусов является нормальной для сезона {season}.")
+            if st:
+                st.success(f"Текущая температура {temp} градусов является нормальной для сезона {season}.")
+            else:
+                print(f"Текущая температура {temp} градусов является нормальной для сезона {season}.")
         else:
             message = f"""
             Текущая температура {temp} градусов является аномальной для сезона {season}.\n
             Допустимый диапазон: [{round(mean_temp - 2 * std_temp, 2)}; {round(mean_temp + 2 * std_temp, 2)}]
             """
-            st.warning(message)
+            if st:
+                st.warning(message)
+            else:
+                print(message)
     else:
         st.error(f"Отсутствуют данные по городу за сезон {season} для определения аномальности.")
     

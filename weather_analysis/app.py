@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from analyzer import analyze_city, open_weather_api, check_anomaly
+from analyzer import analyze_city, open_weather_api, check_anomaly, validate_file
 from plot_func import anomaly_pie_chart, seasonal_profile, weather_time_series
 
 
@@ -20,12 +20,16 @@ def main():
     st.header("Загрузка файла с историческими данными")
     uploaded_file = st.file_uploader("Загрузите CSV файл с историческими данными", type=["csv"])
     
-    if uploaded_file is not None:
+    if uploaded_file:
         df = pd.read_csv(uploaded_file)
 
+        # Проверка файла
+        is_valid, errors = validate_file(df)
+
         # Проверка структуры данных
-        required_columns = {"city", "timestamp", "temperature", "season"}
-        if required_columns.issubset(df.columns):
+        #required_columns = {"city", "timestamp", "temperature", "season"}
+        #if required_columns.issubset(df.columns):
+        if is_valid:
             st.success("Файл успешно загружен!")
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             
@@ -79,7 +83,10 @@ def main():
                 # st.dataframe(city_df)
 
         else:
-            st.error(f"Файл должен содержать столбцы: {', '.join(required_columns)}")
+            #st.error(f"Файл должен содержать столбцы: {', '.join(required_columns)}")
+            st.error("Файл не прошёл проверки. Вот список ошибок:")
+            for error in errors:
+                st.error(error)
 
 if __name__ == "__main__":
     main()
