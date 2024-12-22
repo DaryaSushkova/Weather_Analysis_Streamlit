@@ -27,8 +27,6 @@ def main():
         is_valid, error = validate_file(df)
 
         # Проверка структуры данных
-        #required_columns = {"city", "timestamp", "temperature", "season"}
-        #if required_columns.issubset(df.columns):
         if is_valid:
             st.success("Файл успешно загружен!")
             df['timestamp'] = pd.to_datetime(df['timestamp'])
@@ -76,17 +74,10 @@ def main():
 
                 st.header(f"Сезонный профиль для города {current_city}")
                 seasonal_profile(CURRENT_DATA[current_city]['season_profile'])
-                
-                # Отображение данных для выбранного города
-                # st.subheader(f"Данные для города {selected_city}")
-                # city_df = df[df['city'] == selected_city]
-                # st.dataframe(city_df)
 
         else:
-            #st.error(f"Файл должен содержать столбцы: {', '.join(required_columns)}")
             st.error(f"Файл не прошёл проверку, ошибка: {error}")
-            # for error in errors:
-            #     st.error(error)
+
 
 if __name__ == "__main__":
     main()

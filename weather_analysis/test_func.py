@@ -138,6 +138,6 @@ if __name__ == "__main__":
 
    # Ниже - вызовы дополнительных функций из задания
 
-   #check_temp_cities(df, cities_list)
+   check_temp_cities(df, cities_list)
    #test_open_weather_api(cities_list)
    #compare_analyze_city_func(df)

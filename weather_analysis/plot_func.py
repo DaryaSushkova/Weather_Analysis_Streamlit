@@ -58,4 +58,3 @@ def seasonal_profile(season_profile):
 
     plt.grid(True)
     st.pyplot(plt)
-    st.info(season_profile)
