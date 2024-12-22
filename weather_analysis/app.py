@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from analyzer import analyze_city, open_weather_api, check_anomaly#, validate_file
+from analyzer import analyze_city, open_weather_api, check_anomaly
+from analyzer import validate_file
 from plot_func import anomaly_pie_chart, seasonal_profile, weather_time_series
 
 
