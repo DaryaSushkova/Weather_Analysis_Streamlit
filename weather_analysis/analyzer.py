@@ -24,28 +24,23 @@ def validate_file(df):
     if missing_columns:
         errors.append(f"Отсутствуют колонки: {', '.join(missing_columns)}")
 
-    # Проверка типов данных
-    if "timestamp" in df.columns:
-        try:
-            df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
-            if df['timestamp'].isna().any():
-                errors.append("Колонка 'timestamp' содержит некорректные значения.")
-        except Exception:
-            errors.append("Ошибка при преобразовании 'timestamp' в формат даты/времени.")
-    else:
-        errors.append("Колонка 'timestamp' отсутствует.")
+    # Проверка типа данных для timestamp
+    try:
+        df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+        if df['timestamp'].isna().any():
+            errors.append("Колонка 'timestamp' содержит некорректные значения.")
+    except Exception:
+        errors.append("Ошибка при преобразовании 'timestamp' в формат даты/времени.")
 
+    # Проверка типа данных для температуры
     if "temperature" in df.columns and not pd.api.types.is_numeric_dtype(df['temperature']):
         errors.append("Колонка 'temperature' должна быть числовой.")
     
     # Проверка значений в колонке 'season'
-    if "season" in df.columns:
-        unique_seasons = set(df['season'].dropna().unique())
-        invalid_seasons = unique_seasons - valid_seasons
-        if invalid_seasons:
-            errors.append(f"Колонка 'season' содержит недопустимые значения: {', '.join(invalid_seasons)}.")
-    else:
-        errors.append("Колонка 'season' отсутствует.")
+    unique_seasons = set(df['season'].dropna().unique())
+    invalid_seasons = unique_seasons - valid_seasons
+    if invalid_seasons:
+        errors.append(f"Колонка 'season' содержит недопустимые значения: {', '.join(invalid_seasons)}.")
 
     return len(errors) == 0, errors
 
